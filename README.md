@@ -92,3 +92,12 @@ docker stop webserver
 ```bash
 docker start webserver
 ```
+
+## Docker Hubとは
+> [Docker Hub](https://hub.docker.com)は、GitHubやBitbucketなどのソースコード管理ツールと連挑してコードをビルドする機能や実行可能なアプリケーションのイメージを管理する機能などを備えたDocker公式のレボジトリサーピスです。
+
+
+## Dockerfile
+DockerコンテナをどのDockerイメージから生成するかについて書いたファイル．
+
+Visual Studio Codeでは，拡張機能[Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)を入れると作成が簡単に．
