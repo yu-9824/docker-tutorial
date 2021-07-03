@@ -183,6 +183,17 @@ apt-get update && apt-get install vim
 ```
 もOK．
 
+### Dockerfileから，imageのbuild
+```bash
+docker build -t yu9824/anaconda3 MyOwn/docker
+```
+
+基本構文は以下．
+```bash
+docker build [オプション] パス | URL | -
+```
+パスは`Dockerfile`が含まれる親ディレクトリまでのパス．もし，`Dockerfile`と命名されたものでないものを使ってbuildしたい場合は`-f`オプションを使用してパスを指定する．
+
 
 ======================
 
