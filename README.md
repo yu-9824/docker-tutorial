@@ -162,7 +162,7 @@ docker container start コンテナIDもしくは名前 -ia
 ```
 `-ia`は`docker container run`における`-it`みたいなもの．デフォルトではバックグラウンドで起動するだけ．
 
-### `-v`コマンドでうまくマウントできない
+### `-v`オプションでうまくマウントできない
 `$(...)`でコマンドを囲むことで，コマンドを実行しその結果をコマンドに渡すことができる．（e.g. `$(pwd)`）
 
 ちなみに
@@ -171,17 +171,53 @@ docker container run -it --rm --name anaconda3_tutorial -v $(pwd)/MyOwn/work:/wo
 ```
 で成功した．`mkdir`はしなくても勝手にworkフォルダができていたように感じる．
 
+***
+**2021/07/06追記**
+
+`-v`オプションより`--mount`オプションが推奨されているらしい．
+
+`-v`ではあまり理解する必要がなかったが，マウントには3種類あるらしい．
+1. [バインドマウント (bind)](#バインドマウント)
+2. [ボリュームマウント (volume)](#ボリュームマウント)
+3. [一時ファイルシステムマウント (tmpfs)](#一時ファイルシステムマウント)
+
+#### バインドマウント
+> Dockerホストのファイルやディレクトリを利用できるようにする機能です。バインドマウントを行うと、コンテナの外にある Dockerホストのファイルを、コンテナの中から読み書きできるようになります。バインドマウントしたファイルは、「/home」や「/var」のようなパスを用いて、もとからコンテナの中にあるファイルと同じように利用できるのです。
+
+#### ボリュームマウント
+> Dockerホストのファイルやディレクトリのうち、Dockerが管理しているものを利用できるようにする機能です。
+
+#### 一時ファイルシステムマウント
+> Dockerホストにファイルとして保存したくないデータを一時的に利用できるようにする機能です。
+
+おそらく，`-v`の機能をそのまま実装するためには，
+```bash
+docker container run -it --rm --name anaconda3_tutorial --mount type=bind,src=$(pwd)/MyOwn/work,dst=/work continuumio/anaconda3:2021.05
+```
+でできると思われる．
+
+
+参考: [さわって理解する Docker 入門 第7回 バインドマウントで Hello Java しよう](https://www.ogis-ri.co.jp/otc/hiroba/technical/docker/part7.html)
+***
+
+
 ### Vimが使えないとき
 ubuntu系では，
 ```bash
-apt-get update
-apt-get install vim
+apt update -y
+apt install vim -y
 ```
 もちろん
 ```bash
-apt-get update && apt-get install vim
+apt update -y && apt install vim -y
 ```
 もOK．
+
+***
+**2021/07/06追記**
+
+`apt-get`よりも`apt`の方がいい？感じがするので書き換え．
+***
 
 ### Dockerfileから，imageのbuild
 ```bash
@@ -193,6 +229,7 @@ docker build -t yu9824/anaconda3 MyOwn/docker
 docker build [オプション] パス | URL | -
 ```
 パスは`Dockerfile`が含まれる親ディレクトリまでのパス．もし，`Dockerfile`と命名されたものでないものを使ってbuildしたい場合は`-f`オプションを使用してパスを指定する．
+
 
 
 ======================
